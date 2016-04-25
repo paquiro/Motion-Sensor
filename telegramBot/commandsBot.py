@@ -57,7 +57,7 @@ def record(message):
     cid = message.chat.id
     if (cid == admin):
         args = message.text[7:]
-        vArgs = ev.split()
+        vArgs = args.split()
         if (len(vArgs) == 0):#if the message is '/record'
             fileName=datetime.datetime.now().strftime('%d-%m-%Y_%X') + '.avi'
             #commandRecord='ffmpeg -f v4l2 -i /dev/video0 -f alsa -i hw:1 -acodec mp2 -r 60 -t 5 records/'+fileName
