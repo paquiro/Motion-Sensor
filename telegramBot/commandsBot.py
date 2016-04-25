@@ -60,13 +60,15 @@ def record(message):
         vArgs = ev.split()
         if (len(vArgs) == 0):#if the message is '/record'
             fileName=datetime.datetime.now().strftime('%d-%m-%Y_%X') + '.avi'
-            commandRecord='ffmpeg -f v4l2 -i /dev/video0 -f alsa -i hw:1 -acodec mp2 -r 60 -t 5 records/'+fileName
+            #commandRecord='ffmpeg -f v4l2 -i /dev/video0 -f alsa -i hw:1 -acodec mp2 -r 60 -t 5 records/'+fileName
+            commandRecord='ffmpeg -f v4l2 -i /dev/video0 -r 60 -t 5 records/'+fileName
             os.system(commandRecord)
             bot.send_document(cid, open('records/' + fileName, 'rb'), reply_to_message_id=message.id)
         elif (len(vArgs) == 1):#if the message is 'record arg'
             try:
                 int(vArgs[0])
-                os.system('ffmpeg -f v4l2 -i /dev/video0 -f alsa -i hw:1 -acodec mp2 -r 60 -t 5 /home/paquito/Escritorio/$(date \'+%d-%m-%Y_%X\').avi')
+                #os.system('ffmpeg -f v4l2 -i /dev/video0 -f alsa -i hw:1 -acodec mp2 -r 60 -t 5 records/$(date \'+%d-%m-%Y_%X\').avi')
+                os.system('ffmpeg -f v4l2 -i /dev/video0 -r 60 -t 5 records/$(date \'+%d-%m-%Y_%X\').avi')
             except IndexError:
                 bot.reply_to(message, "Argument of /record must be a number. It represents the number of seconds you want to record")
             except:
