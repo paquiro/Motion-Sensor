@@ -1,2 +1,4 @@
-data.py
+config
 *.pyc
+users.txt
+records
