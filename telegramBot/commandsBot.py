@@ -1,17 +1,23 @@
 # -*- coding: utf-8 -*-
 
 import telebot # Library of Telegram Bot.
-from telebot import types # for keyboards
+#from telebot import types # for keyboards
 
 import data
 import os #for ffmpeg
 import sys
 import datetime
 from data import configure
+from recorder import selectFrameRate
 
 config=configure()
 bot = telebot.TeleBot(config['telegram']['token'])
 admin = int(config['telegram']['admin'])
+print "\033[92mCalculating FrameRate...\033[0m"
+bot.send_message(admin, "Hello! The Bot is now ON. Calculating FrameRate...")
+frameRate = selectFrameRate()
+print "\033[92mFinish! The actual FrameRate is \033[94m" + str(frameRate) + "\033[0m"
+bot.send_message(admin, "Finish! The actual FrameRate is <b>" + str(frameRate) + "</b>", parse_mode="HTML")
 
 commands = { # command description used in the "help" command
  'help': 'Shows help menu.'

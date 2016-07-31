@@ -5,6 +5,7 @@ import sys
 from commandsBot import *
 import threading
 import RPi.GPIO as GPIO
+from recorder import video
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -26,12 +27,22 @@ def detect(run_event):
             isDetected = False
             time.sleep(0.1)
         if i==1 and isDetected == False:       # if detect signal
-            print "\033[92mSomeone detected.\033[0m --> " + time.strftime("%H:%M:%S")
-            bot.send_message(admin, "Someone detected -->   " + time.strftime("%H:%M:%S"))
             GPIO.output(16,GPIO.HIGH)
             GPIO.output(12,GPIO.LOW)
+            print "\033[92mSomeone detected.\033[0m --> " + time.strftime("%H:%M:%S")
+            bot.send_message(admin, "Someone detected -->   " + time.strftime("%H:%M:%S"))
+            for i in range(1, 6, 4):
+                print i
+                name=video(3*i, frameRate) #One video of 3 seconds and another of 15
+                if (name == "error"):
+                    bot.send_message (admin, "The camera is busy now.")
+                else:
+                    bot.send_document(admin, open(name, 'rb'))
+            #bot.send_document(admin, open('media/video/' + video(3), 'rb'))
+            #bot.send_document(admin, open('media/video/' + video(15), 'rb'))
+            print "ya"
+
             isDetected = True
-            time.sleep(0.1)
     GPIO.cleanup()
 
 
@@ -48,4 +59,3 @@ try:
 except KeyboardInterrupt:
     run_event.clear()
     t.join()
-    bot.send_message(admin, "The bot is set to off -->   " + time.strftime("%H:%M:%S"))
